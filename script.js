@@ -5,6 +5,7 @@ const ctx = canvas.getContext('2d');
 const logoImage = document.getElementById("logo-image");
 const BGM = new Audio('music/nature.mp3');
 const dingSFX = new Audio('sfx/ding.mp3');
+let entry = document.getElementById("entry");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 BGM.volume = 0.7;
@@ -77,6 +78,13 @@ function animate(){
     effect.update();
     logoAnimation = requestAnimationFrame(animate);
 }
+//結束動畫並進場
+function cancelAnimationAndShowIndexPage(){
+    setTimeout(function(){
+        cancelAnimationFrame(logoAnimation);
+        canvas.style.display='none';
+    },TIME_TO_END_ANIMATION);
+}
 //用按鈕讓使用者控制音樂播放
 function toggleBGM(event){
     if (event.cancelable) event.preventDefault();
@@ -87,3 +95,4 @@ function toggleBGM(event){
 const effect = new Effect(canvas.width,canvas.height);
 effect.init(ctx);
 animate();
+cancelAnimationAndShowIndexPage();
