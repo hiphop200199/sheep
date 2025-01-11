@@ -9,12 +9,30 @@
   color: white;
 }
 
-#logo-image {
+.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+img {
   display: none;
 }
 
+canvas {
+  position: absolute;
+  inset: 0;
+}
+
+#canvas {
+  z-index: 1;
+}
+
+#hit-canvas {
+  z-index: -1;
+}
+
 #page {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -24,46 +42,80 @@
   background-size: cover;
   background-position: center;
 }
-#page #title {
+#page #BGM-control {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 2px;
+  border: none;
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 2;
+}
+#page #title, #page #score-title {
   font-size: 8rem;
+  filter: drop-shadow(1px 1px 3px white);
+  transition: 0.5s;
 }
 #page #start {
   background: none;
+  border-radius: 8px;
+  font-size: 3rem;
+  box-shadow: 0 0 2px 4px white;
+  border: none;
+  padding: 2px 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  z-index: 2;
+}
+#page #start:hover {
+  scale: 1.05;
 }
 #page #copyright {
   font-size: 2.5rem;
+  transition: 0.5s;
 }
 
 @media screen and (max-width: 576px) {
-  #page #title {
+  #page #title, #page #score-title {
     font-size: 4rem;
+  }
+  #page #start {
+    font-size: 2rem;
   }
   #page #copyright {
     font-size: 1rem;
   }
 }
 @media screen and (min-width: 577px) and (max-width: 767px) {
-  #page #title {
+  #page #title, #page #score-title {
     font-size: 4rem;
+  }
+  #page #start {
+    font-size: 2rem;
   }
   #page #copyright {
     font-size: 1.5rem;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 992px) {
-  #page #title {
+  #page #title, #page #score-title {
     font-size: 6rem;
+  }
+  #page #start {
+    font-size: 2.5rem;
   }
   #page #copyright {
     font-size: 2rem;
   }
 }
 @media screen and (orientation: landscape) and (min-width: 400px) and (max-height: 576px) {
-  #page #title {
+  #page #title, #page #score-title {
     font-size: 4rem;
   }
-  #page #title.in {
-    transform: none;
+  #page #start {
+    font-size: 2rem;
   }
   #page #copyright {
     font-size: 1rem;

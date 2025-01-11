@@ -11,12 +11,25 @@
 }
 
 $transitionTime: 0.5s;
-
-#logo-image {
+.hide{
+ opacity: 0;
+ pointer-events: none;
+}
+img {
   display: none;
 }
+canvas{
+  position: absolute;
+  inset: 0;
+}
+#canvas{
+  z-index: 1;
+}
+#hit-canvas{
+  z-index: -1;
+}
 #page {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -25,23 +38,50 @@ $transitionTime: 0.5s;
   background-image: url("/image/mountain.jpg");
   background-size: cover;
   background-position: center;
-  #title {
+  #BGM-control{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 2px;
+    border: none;
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 2;
+}
+  #title,#score-title {
     font-size: 8rem;
+    filter: drop-shadow(1px 1px 3px white);
+    transition: $transitionTime;
   }
   #start {
     background: none;
+    border-radius: 8px;
+    font-size: 3rem;
+    box-shadow: 0 0 2px 4px white;
+    border: none;
+    padding: 2px 5px;
+    cursor: pointer;
+    transition: $transitionTime;
+    z-index: 2;
+    &:hover{
+      scale: 1.05;
+    }
   }
   #copyright {
     font-size: 2.5rem;
+    transition: $transitionTime;
   }
 }
 
 @media screen and (max-width: 576px) {
   #page {
-    #title {
+    #title,#score-title {
       font-size: 4rem;
     }
-
+    #start{
+      font-size: 2rem;
+    }
     #copyright {
       font-size: 1rem;
     }
@@ -49,10 +89,12 @@ $transitionTime: 0.5s;
 }
 @media screen and (min-width: 577px) and (max-width: 767px) {
   #page {
-    #title {
+    #title,#score-title {
       font-size: 4rem;
     }
-
+    #start{
+      font-size: 2rem;
+    }
     #copyright {
       font-size: 1.5rem;
     }
@@ -61,8 +103,11 @@ $transitionTime: 0.5s;
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
   #page {
-    #title {
+    #title,#score-title {
       font-size: 6rem;
+    }
+    #start{
+      font-size: 2.5rem;
     }
     #copyright {
       font-size: 2rem;
@@ -71,16 +116,15 @@ $transitionTime: 0.5s;
 }
 @media screen and (orientation: landscape) and (min-width: 400px) and (max-height: 576px) {
   #page {
-
-    #title {
+    #title,#score-title {
       font-size: 4rem;
-      &.in {
-        transform: none;
-      }
     }
-
+    #start{
+      font-size: 2rem;
+    }
     #copyright {
       font-size: 1rem;
     }
   }
 }
+

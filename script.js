@@ -1,14 +1,25 @@
+import * as r from "./round.js";
 //變數宣告
 const TIME_TO_END_ANIMATION = 4000;
+const TIME_TO_START_GAME = 2000;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext('2d');
+const hitCanvas = document.getElementById("hit-canvas");
+const hitCtx = canvas.getContext('2d');
 const logoImage = document.getElementById("logo-image");
 const BGM = new Audio('music/nature.mp3');
 const dingSFX = new Audio('sfx/ding.mp3');
 let page = document.getElementById("page");
+let start = document.getElementById('start');
+let entryComponents = document.querySelectorAll('.entry-components')
+let logoAnimation;
+let game;
+let round;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-BGM.volume = 0.7;
+hitCanvas.width = window.innerWidth;
+hitCanvas.height = window.innerHeight;
+BGM.volume = 0.5;
 BGM.loop = true;
 
 //mylogo
@@ -82,7 +93,9 @@ function animate(){
 function cancelAnimationAndShowIndexPage(){
     setTimeout(function(){
         cancelAnimationFrame(logoAnimation);
-        canvas.style.display='none';
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+        page.style.display='flex'
+       
     },TIME_TO_END_ANIMATION);
 }
 //用按鈕讓使用者控制音樂播放
@@ -91,6 +104,20 @@ function toggleBGM(event){
     BGM.paused?BGM.play():BGM.pause();
 }
 
+start.addEventListener('click',function () {
+    dingSFX.pause();
+    dingSFX.currentTime = 0;
+    dingSFX.play(); 
+    setTimeout(() => {
+        entryComponents.forEach(e=>{
+          e.classList.add('hide')
+        })
+        BGM.play()
+        round = new r.Round(canvas.width,canvas.height)
+        round.init(ctx)
+        round.draw(ctx)
+    }, TIME_TO_START_GAME);
+})
 
 const effect = new Effect(canvas.width,canvas.height);
 effect.init(ctx);
