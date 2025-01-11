@@ -54,6 +54,17 @@ canvas{
     filter: drop-shadow(1px 1px 3px white);
     transition: $transitionTime;
   }
+  #score-title{
+    position: absolute;
+    top: 5px;
+  }
+  #time-title{
+    position: absolute;
+    right: 5px;
+    top: 50px;
+    font-size: 3rem;
+    transition: $transitionTime;
+  }
   #start {
     background: none;
     border-radius: 8px;
@@ -79,6 +90,9 @@ canvas{
     #title,#score-title {
       font-size: 4rem;
     }
+    #time-title{
+      font-size: 2rem;
+    }
     #start{
       font-size: 2rem;
     }
@@ -91,6 +105,9 @@ canvas{
   #page {
     #title,#score-title {
       font-size: 4rem;
+    }
+    #time-title{
+      font-size: 2rem;
     }
     #start{
       font-size: 2rem;
@@ -106,6 +123,9 @@ canvas{
     #title,#score-title {
       font-size: 6rem;
     }
+    #time-title{
+      font-size: 2.5rem;
+    }
     #start{
       font-size: 2.5rem;
     }
@@ -118,6 +138,9 @@ canvas{
   #page {
     #title,#score-title {
       font-size: 4rem;
+    }
+    #time-title{
+      font-size: 2rem;
     }
     #start{
       font-size: 2rem;
