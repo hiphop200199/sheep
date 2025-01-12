@@ -47,8 +47,8 @@ export  class Bubble{
         this.dirs = [1,-1]
         this.rotates = [0,1]
         this.spins = [0,1]
-        this.speed = Math.random()*1.5 
-        this.range = Math.random()*1.5
+        this.speed = Math.random()*1.4
+        this.range = Math.random()*1.2
         this.rotate =  this.rotates[Math.round(Math.random()*(this.rotates.length -1))]
         this.spin =   this.spins[Math.round(Math.random()*(this.spins.length -1))]
         this.vx = this.dirs[Math.round(Math.random()*(this.dirs.length -1))]*this.speed;

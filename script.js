@@ -6,7 +6,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const hitCanvas = document.getElementById("hit-canvas");
 const hitCtx = hitCanvas.getContext("2d", { willReadFrequently: true });
-console.log(hitCtx.getContextAttributes());
+
 
 const logoImage = document.getElementById("logo-image");
 const BGM = new Audio("music/nature.mp3");
@@ -20,6 +20,7 @@ let entryComponents = document.querySelectorAll(".entry-components");
 let scoreTitle = document.getElementById("score-title");
 let score = document.getElementById("score");
 let timeTitle = document.getElementById("time-title");
+let timeTitleBoxData;
 let time = document.getElementById("time");
 let logoAnimation;
 let gameAnimation;
@@ -27,10 +28,13 @@ let round;
 let resultDialog = document.getElementById('result')
 let resultScore = document.getElementById('result-score')
 let backTitle = document.getElementById('back-title')
+let list = document.getElementById('list')
+let explain  = document.getElementById('explain')
+let closeExplain = document.getElementById('close-explain')
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.height = window.innerHeight ;
 hitCanvas.width = window.innerWidth;
-hitCanvas.height = window.innerHeight;
+hitCanvas.height = window.innerHeight ;
 BGM.volume = 0.5;
 BGM.loop = true;
 
@@ -130,13 +134,13 @@ function game(timeStamp) {
   const deltaTime = timeStamp - lastTime;
   lastTime = timeStamp;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  hitCtx.clearRect(0, 0, canvas.width, canvas.height);
+  hitCtx.clearRect(0, 0, hitCanvas.width, hitCanvas.height);
 
   if (gameTimer >= timeGameSeconds) {
     if (round.totalTime <= 0) {
       cancelAnimationFrame(gameAnimation);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      hitCtx.clearRect(0, 0, canvas.width, canvas.height);
+      hitCtx.clearRect(0, 0, hitCanvas.width, hitCanvas.height);
       BGM.pause();
       whistleSFX.play();
       scoreTitle.classList.add("hide");
@@ -176,7 +180,7 @@ function game(timeStamp) {
     spawnTimer += deltaTime;
   }
   round.bubbleArray.forEach((b, i) => {
-    if (b.x > round.width || b.x < 0 || b.y > round.height || b.y < 0) {
+    if (b.x > round.width || b.x < 0 || b.y > round.height || b.y < timeTitleBoxData.top + timeTitleBoxData.y) {
       delete r.colorsHash[b.colorKey];
       round.bubbleArray.splice(i, 1);
     }
@@ -228,14 +232,40 @@ canvas.addEventListener("click", function (e) {
     time.innerText = round.totalTime;
   }
 });
-window.addEventListener("resize", function () {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  hitCanvas.width = window.innerWidth;
-  hitCanvas.height = window.innerHeight;
-});
+function adjustCanvasSize(){
+  timeTitleBoxData = timeTitle.getBoundingClientRect()
+  if(window.outerHeight <= 576){
+    canvas.width = window.outerWidth;
+    canvas.height = window.outerHeight
+ 
+    hitCanvas.width = window.outerWidth;
+    hitCanvas.height = window.outerHeight 
+   round.width = canvas.width
+   round.height = canvas.height
+  }else{
+    if(window.outerWidth<=576){
+      canvas.width = window.outerWidth;
+      canvas.height = window.outerHeight
+  
+      hitCanvas.width = window.outerWidth;
+      hitCanvas.height = window.outerHeight 
+      round.width = canvas.width
+      round.height = canvas.height
+    }else{
+      canvas.width = window.innerWidth;
+      canvas.height =window.innerHeight 
+   
+      hitCanvas.width = window.innerWidth;
+      hitCanvas.height = window.innerHeight
+      round.width = canvas.width
+      round.height = canvas.height
+    }
+  }  
+}
+window.addEventListener("resize", ()=>adjustCanvasSize());
 BGMcontrol.addEventListener("click", toggleBGM);
 start.addEventListener("click", function () {
+
   dingSFX.pause();
   dingSFX.currentTime = 0;
   dingSFX.play();
@@ -243,8 +273,10 @@ start.addEventListener("click", function () {
     entryComponents.forEach((e) => {
       e.classList.add("hide");
     });
-
+    
     round = new r.Round(canvas.width, canvas.height);
+    timeTitleBoxData = timeTitle.getBoundingClientRect()
+    adjustCanvasSize()
     round.init(ctx);
     score.innerText = round.totalScore;
     time.innerText = round.totalTime;
@@ -259,6 +291,14 @@ backTitle.addEventListener('click',function(){
   resultDialog.classList.remove('open')
   setTimeout(() => { resultDialog.close() }, 500);
   entryComponents.forEach(e => e.classList.remove('hide'))
+})
+list.addEventListener('click',function(){
+  explain.showModal()
+  explain.classList.add('open')
+})
+closeExplain.addEventListener('click',function(){
+  explain.classList.remove('open')
+  setTimeout(() => { explain.close() }, 500);
 })
 const effect = new Effect(canvas.width, canvas.height);
 effect.init(ctx);
