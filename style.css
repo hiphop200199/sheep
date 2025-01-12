@@ -31,6 +31,50 @@ canvas {
   z-index: -1;
 }
 
+#result {
+  left: calc(50% - 125px);
+  top: calc(50% - 75px);
+  transform: scale(0.6) rotateZ(0.25turn);
+  opacity: 0;
+  background: none;
+  box-shadow: 0 0 2px 4px white;
+  width: 250px;
+  height: 150px;
+  transition: 0.5s;
+  border-radius: 8px;
+}
+#result * {
+  height: 40px;
+  margin-block: 5px;
+}
+#result.open {
+  transform: none;
+  opacity: 1;
+}
+#result h4 {
+  font-size: 2rem;
+  text-align: center;
+}
+#result p {
+  font-size: 1.5rem;
+  text-align: center;
+}
+#result button {
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  padding: 2px 5px;
+  font-size: 1.2rem;
+  background: none;
+  box-shadow: 0 0 2px 4px white;
+  cursor: pointer;
+  transition: 0.5s;
+  border: none;
+}
+#result button:hover {
+  scale: 1.05;
+}
+
 #page {
   display: none;
   flex-direction: column;

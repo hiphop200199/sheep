@@ -5,9 +5,8 @@ const TIME_TO_START_GAME = 2000;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const hitCanvas = document.getElementById("hit-canvas");
-const hitCtx = hitCanvas.getContext("2d",{ willReadFrequently: true });
-console.log( hitCtx.getContextAttributes());
-
+const hitCtx = hitCanvas.getContext("2d", { willReadFrequently: true });
+console.log(hitCtx.getContextAttributes());
 
 const logoImage = document.getElementById("logo-image");
 const BGM = new Audio("music/nature.mp3");
@@ -19,10 +18,15 @@ let page = document.getElementById("page");
 let start = document.getElementById("start");
 let entryComponents = document.querySelectorAll(".entry-components");
 let scoreTitle = document.getElementById("score-title");
+let score = document.getElementById("score");
 let timeTitle = document.getElementById("time-title");
+let time = document.getElementById("time");
 let logoAnimation;
 let gameAnimation;
 let round;
+let resultDialog = document.getElementById('result')
+let resultScore = document.getElementById('result-score')
+let backTitle = document.getElementById('back-title')
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 hitCanvas.width = window.innerWidth;
@@ -30,9 +34,11 @@ hitCanvas.height = window.innerHeight;
 BGM.volume = 0.5;
 BGM.loop = true;
 
-let timer = 0
-let timeSpawnNewBubble = 1000
-let lastTime = 0 
+let spawnTimer = 0;
+let gameTimer = 0;
+let timeSpawnNewBubble = 200;
+let timeGameSeconds = 1000;
+let lastTime = 0;
 
 //mylogo
 //用來生成一個個粒子
@@ -120,77 +126,114 @@ function toggleBGM(event) {
   if (event.cancelable) event.preventDefault();
   BGM.paused ? BGM.play() : BGM.pause();
 }
- function game(timeStamp){
-    const deltaTime = timeStamp - lastTime
-    lastTime = timeStamp
-    ctx.clearRect(0, 0, canvas.width,canvas.height);
-    hitCtx.clearRect(0,0,canvas.width,canvas.height);
-  
-    if(timer >=timeSpawnNewBubble){
-        console.log(round.time);
-        if(round.time==0){
-            cancelAnimationFrame(gameAnimation)
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-           hitCtx.clearRect(0, 0, canvas.width, canvas.height);
-           BGM.pause()
-            whistleSFX.play()
-           return
-        }
-     
-        let rand = Math.random()
-        if(rand < 0.01) round.bubbleArray.push(new r.LightningBubble(round))
-        else if(rand >=0.01 && rand < 0.05) round.bubbleArray.push(new r.BlackSheepBubble(round))
-        else if(rand >=0.05 && rand < 0.10) round.bubbleArray.push(new r.BrownSheepBubble(round))
-        else if(rand >=0.10 && rand < 0.12) round.bubbleArray.push(new r.SunnyBubble(round))
-        else if(rand >=0.12 && rand < 0.14) round.bubbleArray.push(new r.RainyBubble(round))
-        else if(rand >=0.14 && rand < 0.74) round.bubbleArray.push(new r.SheepBubble(round))
-        else if(rand >=0.74 && rand < 0.84) round.bubbleArray.push(new r.SilverSheepBubble(round))
-        else if(rand >=0.84 && rand < 0.9) round.bubbleArray.push(new r.GoldSheepBubble(round))
-        else round.bubbleArray.push(new r.GrassBubble(round))
-    round.time--
-  
-        timer = 0
-        
-    }else{
-        timer+=deltaTime
-   
-        
+function game(timeStamp) {
+  const deltaTime = timeStamp - lastTime;
+  lastTime = timeStamp;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hitCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (gameTimer >= timeGameSeconds) {
+    if (round.totalTime == 0) {
+      cancelAnimationFrame(gameAnimation);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hitCtx.clearRect(0, 0, canvas.width, canvas.height);
+      BGM.pause();
+      whistleSFX.play();
+      scoreTitle.classList.add("hide");
+      timeTitle.classList.add("hide");
+      BGMcontrol.classList.add("hide");
+      resultScore.innerText = round.totalScore
+      resultDialog.showModal()
+      resultDialog.classList.add('open')
+      return;
     }
-    round.bubbleArray.forEach((b,i )=> {
-        if(b.x > round.width || b.x < 0 || b.y > round.height || b.y <0){
-            delete r.colorsHash[b.colorKey]
-            round.bubbleArray.splice(i,1)
-        }
-    });
-   round.deg+=0.03
-   round.angle++
-   round.update(round.deg)
-   round.draw(ctx)
-   round.hitDraw(hitCtx)
-   gameAnimation = requestAnimationFrame(game)
+    round.totalTime--;
+    time.innerText = round.totalTime;
+    gameTimer = 0;
+  } else {
+    gameTimer += deltaTime;
+  }
+  if (spawnTimer >= timeSpawnNewBubble) {
+    let rand = Math.random();
+    if (rand < 0.005) round.bubbleArray.push(new r.LightningBubble(round));
+    else if (rand >= 0.005 && rand < 0.05)
+      round.bubbleArray.push(new r.BlackSheepBubble(round));
+    else if (rand >= 0.05 && rand < 0.105)
+      round.bubbleArray.push(new r.BrownSheepBubble(round));
+    else if (rand >= 0.105 && rand < 0.12)
+      round.bubbleArray.push(new r.SunnyBubble(round));
+    else if (rand >= 0.12 && rand < 0.14)
+      round.bubbleArray.push(new r.RainyBubble(round));
+    else if (rand >= 0.14 && rand < 0.9)
+      round.bubbleArray.push(new r.SheepBubble(round));
+    else if (rand >= 0.9 && rand < 0.93)
+      round.bubbleArray.push(new r.SilverSheepBubble(round));
+    else if (rand >= 0.93 && rand < 0.95)
+      round.bubbleArray.push(new r.GoldSheepBubble(round));
+    else round.bubbleArray.push(new r.GrassBubble(round));
+    spawnTimer = 0;
+  } else {
+    spawnTimer += deltaTime;
+  }
+  round.bubbleArray.forEach((b, i) => {
+    if (b.x > round.width || b.x < 0 || b.y > round.height || b.y < 0) {
+      delete r.colorsHash[b.colorKey];
+      round.bubbleArray.splice(i, 1);
+    }
+  });
+  round.deg += 0.03;
+  round.angle++;
+  round.update(round.deg);
+  round.draw(ctx);
+  round.hitDraw(hitCtx);
+  gameAnimation = requestAnimationFrame(game);
 }
-canvas.addEventListener('click',function(e){
-    const mousePos = {
-        x:e.clientX - canvas.offsetLeft,
-        y:e.clientY - canvas.offsetTop
+canvas.addEventListener("click", function (e) {
+  const mousePos = {
+    x: e.clientX,
+    y: e.clientY,
+  };
+  const pixel = hitCtx.getImageData(mousePos.x, mousePos.y, 1, 1);
+  const pc = pixel.data;
+
+  const color = `rgb(${pc[0]},${pc[1]},${pc[2]})`;
+  const shape = r.colorsHash[color];
+
+  if (shape) {
+    popSFX.pause();
+    popSFX.currentTime = 0;
+    popSFX.play();
+    switch (shape.type) {
+      case "sheep":
+      case "sheepSilver":
+      case "sheepGold":
+      case "sheepBrown":
+      case "sheepBlack":
+        round.totalScore += shape.score;
+        break;
+      case "grass":
+        round.totalScore *= 2;
+        break;
+      case "lightning":
+        round.totalScore /= 2;
+        break;
+      case "sunny":
+      case "rainy":
+        round.totalTime += shape.time;
+        break;
     }
-    const pixel = hitCtx.getImageData(mousePos.x,mousePos.y,1,1);
-    const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-    const shape = r.colorsHash[color];
-    console.log(shape);
-    
-    if(shape){
-        popSFX.pause()
-        popSFX.currentTime =0
-        popSFX.play()
-    }
-})
-window.addEventListener('resize',function(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    hitCanvas.width = window.innerWidth;
-    hitCanvas.height = window.innerHeight;
-})
+    delete r.colorsHash[color];
+    round.bubbleArray = round.bubbleArray.filter((b, i) => b.colorKey != color);
+    score.innerText = round.totalScore;
+    time.innerText = round.totalTime;
+  }
+});
+window.addEventListener("resize", function () {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  hitCanvas.width = window.innerWidth;
+  hitCanvas.height = window.innerHeight;
+});
 BGMcontrol.addEventListener("click", toggleBGM);
 start.addEventListener("click", function () {
   dingSFX.pause();
@@ -200,16 +243,23 @@ start.addEventListener("click", function () {
     entryComponents.forEach((e) => {
       e.classList.add("hide");
     });
+
+    round = new r.Round(canvas.width, canvas.height);
+    round.init(ctx);
+    score.innerText = round.totalScore;
+    time.innerText = round.totalTime;
     scoreTitle.classList.remove("hide");
     timeTitle.classList.remove("hide");
     BGMcontrol.classList.remove("hide");
     BGM.play();
-    round = new r.Round(canvas.width, canvas.height);
-    round.init(ctx);
-   game(0)
+    game(0);
   }, TIME_TO_START_GAME);
 });
-
+backTitle.addEventListener('click',function(){
+  resultDialog.classList.remove('open')
+  setTimeout(() => { resultDialog.close() }, 500);
+  entryComponents.forEach(e => e.classList.remove('hide'))
+})
 const effect = new Effect(canvas.width, canvas.height);
 effect.init(ctx);
 animate();

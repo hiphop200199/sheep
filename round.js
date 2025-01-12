@@ -1,8 +1,8 @@
 const sheep = document.getElementById('sheep')
-const sheepBlack = document.getElementById('sheep')
-const sheepBrown = document.getElementById('sheep')
-const sheepGold = document.getElementById('sheep')
-const sheepSilver = document.getElementById('sheep')
+const sheepBlack = document.getElementById('sheep-black')
+const sheepBrown = document.getElementById('sheep-brown')
+const sheepGold = document.getElementById('sheep-gold')
+const sheepSilver = document.getElementById('sheep-silver')
 const sunny = document.getElementById('sunny')
 const rainy = document.getElementById('rainy')
 const lightning = document.getElementById('lightning')
@@ -18,8 +18,8 @@ export const colorsHash = {};
         this.num = Math.round(Math.random()*6+2)
         this.deg = 0
         this.angle = 0
-        this.score = 0
-        this.time = 60
+        this.totalScore = 0
+        this.totalTime = 60
     }
     init(ctx){
         for(let i=0;i<this.num;i++){
@@ -110,54 +110,70 @@ export class SheepBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sheep
+        this.score = 2
+        this.type = 'sheep'
     }
 }
 export class BlackSheepBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sheepBlack
+          this.score = -4
+        this.type = 'sheepBlack'
     }
 }
 export class BrownSheepBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sheepBrown
+          this.score = -2
+        this.type = 'sheepBrown'
     }
 }
  export class GoldSheepBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sheepGold
+          this.score = 6
+        this.type = 'sheepGold'
     }
 }
  export class SilverSheepBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sheepSilver
+          this.score = 4
+        this.type = 'sheepSilver'
     }
 }
  export class LightningBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = lightning
+        this.type = 'lightning'
     }
 }
  export class SunnyBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = sunny
+          this.time = 6
+        this.type = 'sunny'
     }
 }
  export class RainyBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = rainy
+             this.time = -6
+        this.type = 'rainy'
     }
 }
  export class GrassBubble extends Bubble{
     constructor(round){
         super(round)
         this.image = grass
+        this.type = 'grass'
     }
 }
 

@@ -39,12 +39,29 @@
     <div id="page">
       <h1 id="title" class="entry-components">Sheep</h1>
       <button id="BGM-control" class="hide">♫</button>
-      <h2 id="score-title" class="hide">Score:</h2>
-      <h3 id="time-title" class="hide">Time:</h3>
+      <h2 id="score-title" class="hide">Score:<strong id="score"></strong></h2>
+      <h3 id="time-title" class="hide">Time:<strong id="time"></strong></h3>
       <button id="start" class="entry-components">Start</button>
       <p id="copyright" class="entry-components">Copyright © EricWoo 2025 | All Rights Reserved.</p>
     </div>
-
+    <dialog id="result">
+      <h4>Congrats!</h4>
+      <p>You get <strong id="result-score"></strong>!</p>
+      <button id="back-title">Back title.</button>
+    </dialog>
+    <dialog id="explain">
+      <h4>List</h4>
+      <table>
+        <tbody>
+          <tr>
+            <td class="img-box">
+              <img src="image/sheep.png" alt="">
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </dialog>
     <script type="module" src="script.js"></script>
     <script type="module" src="round.js"></script>
   </body>
