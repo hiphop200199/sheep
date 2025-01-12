@@ -133,7 +133,7 @@ function game(timeStamp) {
   hitCtx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (gameTimer >= timeGameSeconds) {
-    if (round.totalTime == 0) {
+    if (round.totalTime <= 0) {
       cancelAnimationFrame(gameAnimation);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       hitCtx.clearRect(0, 0, canvas.width, canvas.height);
