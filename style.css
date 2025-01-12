@@ -82,7 +82,7 @@ canvas {
   align-items: center;
   position: relative;
   height: 100dvh;
-  background-image: url("/image/mountain.jpg");
+  background-image: url("image/mountain.jpg");
   background-size: cover;
   background-position: center;
 }
